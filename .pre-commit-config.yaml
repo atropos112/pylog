@@ -1,0 +1,72 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.3.0
+    hooks:
+      - id: mypy
+        args: ["--explicit-package-bases", "--ignore-missing-imports"]
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+        args:
+          - "--line-length=350"
+          - "--target-version=py311"
+        exclude: ^(app/imports/)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: debug-statements
+      - id: name-tests-test
+      - id: requirements-txt-fixer
+  - repo: https://github.com/asottile/setup-cfg-fmt
+    rev: v2.2.0
+    hooks:
+      - id: setup-cfg-fmt
+        exclude: ^(app/imports/)
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.4.0
+    hooks:
+      - id: add-trailing-comma
+        args: [--py36-plus]
+        exclude: ^(app/imports/)
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.4.0
+    hooks:
+      - id: pyupgrade
+        args: [--py311-plus]
+        exclude: ^(app/imports/)
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.1.1
+    hooks:
+      - id: autoflake
+        args:
+          - "--in-place"
+          - "--expand-star-imports"
+          - "--remove-duplicate-keys"
+          - "--remove-unused-variables"
+          - "--remove-all-unused-imports"
+        exclude: ^(app/imports/)
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args:
+          - "--max-line-length=350"
+        exclude: ^(app/imports/)
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args:
+          - "-l 350"
+          - "--profile black"
+          - "--py auto"
+        exclude: ^(app/imports/)
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
+    hooks:
+      - id: prettier
+        exclude: \.github/workflows/diff_shades\.yml
