@@ -10,7 +10,7 @@ from pylog.logger import Logger
 
 
 class OpenTelemetryLogger(Logger):
-    def __init__(self, service_name: str | None = None, service_instance_id: str | None = None):
+    def __init__(self, service_name: str | None = None, service_instance_id: str | None = None, endpoint: str | None = None):
         self.logger_provider = LoggerProvider(
             resource=Resource.create(
                 {
@@ -21,7 +21,7 @@ class OpenTelemetryLogger(Logger):
         )
         set_logger_provider(self.logger_provider)
 
-        self.exporter = OTLPLogExporter(insecure=True)
+        self.exporter = OTLPLogExporter(insecure=True, endpoint=endpoint)
         self.logger_provider.add_log_record_processor(BatchLogRecordProcessor(self.exporter))
         self.handler = LoggingHandler(level=logging.NOTSET, logger_provider=self.logger_provider)
 

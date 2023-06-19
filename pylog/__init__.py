@@ -6,7 +6,7 @@ from pylog.loguru import LoguruLogger
 from pylog.opentelemetry import OpenTelemetryLogger
 
 
-def get_logger(type: LoggerType | str | None = None, service_name: str | None = None, service_instance_id: str | None = None) -> Logger:
+def get_logger(type: LoggerType | str | None = None, service_name: str | None = None, service_instance_id: str | None = None, endpoint: str | None = None) -> Logger:
     if type is None:
         type = os.getenv("ENV_VARIABLE_NAME", default=LoggerType.LOGURU)
     if isinstance(type, str):
@@ -16,6 +16,6 @@ def get_logger(type: LoggerType | str | None = None, service_name: str | None = 
         case LoggerType.LOGURU:
             return LoguruLogger()
         case LoggerType.OPENTELEMETRY:
-            return OpenTelemetryLogger(service_name=service_name, service_instance_id=service_instance_id)
+            return OpenTelemetryLogger(service_name=service_name, service_instance_id=service_instance_id, endpoint=endpoint)
         case _:
             raise Exception(f"Unknown logger type: {type}")
