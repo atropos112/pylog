@@ -6,6 +6,7 @@ from pylog.logger import Logger
 class LoguruLogger(Logger):
     def __init__(self):
         self.logger = loguru_logger
+        self.logger.level("DEBUG")
 
     def debug(self, message: str):
         self.logger.debug(message)
@@ -24,3 +25,6 @@ class LoguruLogger(Logger):
 
     def shutdown(self):
         pass
+
+    def level(self, level: str):
+        self.logger.level(level)

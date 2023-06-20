@@ -8,7 +8,7 @@ from pylog.opentelemetry import OpenTelemetryLogger
 
 def get_logger(type: LoggerType | str | None = None, service_name: str | None = None, service_instance_id: str | None = None, endpoint: str | None = None) -> Logger:
     if type is None:
-        type = os.getenv("ENV_VARIABLE_NAME", default=LoggerType.LOGURU)
+        type = os.getenv("ATRO_LOGGER_TYPE", default=LoggerType.LOGURU)
     if isinstance(type, str):
         type = str_to_logger_type(type)
 

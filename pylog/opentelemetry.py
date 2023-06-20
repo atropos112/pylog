@@ -1,16 +1,20 @@
 import logging
 
+from opentelemetry import trace
 from opentelemetry._logs import set_logger_provider
 from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.sdk.resources import Resource
+from opentelemetry.sdk.trace import TracerProvider
 
+from pylog.level import str_to_logger_type
 from pylog.logger import Logger
 
 
 class OpenTelemetryLogger(Logger):
     def __init__(self, service_name: str | None = None, service_instance_id: str | None = None, endpoint: str | None = None):
+        trace.set_tracer_provider(TracerProvider())
         self.logger_provider = LoggerProvider(
             resource=Resource.create(
                 {
@@ -28,6 +32,7 @@ class OpenTelemetryLogger(Logger):
         # Attach OTLP handler to root logger
         logging.getLogger().addHandler(self.handler)
         self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.DEBUG)
 
     def debug(self, message: str):
         self.logger.debug(message)
@@ -46,3 +51,8 @@ class OpenTelemetryLogger(Logger):
 
     def shutdown(self):
         self.logger_provider.shutdown()
+
+    def level(self, level: str | int):
+        if isinstance(level, str):
+            level = str_to_logger_type(level)
+        self.logger.setLevel(level)

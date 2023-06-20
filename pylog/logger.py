@@ -25,3 +25,7 @@ class Logger(ABC):
     @abstractmethod
     def shutdown(self):
         pass
+
+    @abstractmethod
+    def level(self, level: str):
+        pass
