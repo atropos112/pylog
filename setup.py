@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="atro-pylog",
-    version="0.0.2",
+    version="0.0.3",
     packages=find_packages(),
     author="Atropos",
     author_email="pypi.rising@atro.xyz",
@@ -11,10 +11,11 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/atropos/atro-pylog",
     install_requires=[
-        "requests",
-        "numpy>=1.18.0",
-        "pandas",
-        "matplotlib",
+        "loguru",
+        "opentelemetry-api",
+        "opentelemetry-exporter-otlp-proto-grpc",
+        "opentelemetry-sdk",
+        "pydantic",
     ],
     classifiers=[
         "License :: OSI Approved :: MIT License",

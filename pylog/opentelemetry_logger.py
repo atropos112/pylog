@@ -8,24 +8,26 @@ from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 
-from pylog.level import str_to_logger_type
-from pylog.logger import Logger
+from pylog.level import str_to_level
+from pylog.logger_base import Logger
+from pylog.settings import OpenTelemetryLoggerSettings
 
 
 class OpenTelemetryLogger(Logger):
-    def __init__(self, service_name: str | None = None, service_instance_id: str | None = None, endpoint: str | None = None):
+    def __init__(self, settings: OpenTelemetryLoggerSettings | None = None):
+        self.settings = settings or OpenTelemetryLoggerSettings()
         trace.set_tracer_provider(TracerProvider())
         self.logger_provider = LoggerProvider(
             resource=Resource.create(
                 {
-                    "service.name": service_name or "",
-                    "service.instance.id": service_instance_id or "",
+                    "service.name": self.settings.service_name or "",
+                    "service.instance.id": self.settings.instance_id or "",
                 },
             ),
         )
         set_logger_provider(self.logger_provider)
 
-        self.exporter = OTLPLogExporter(insecure=True, endpoint=endpoint)
+        self.exporter = OTLPLogExporter(insecure=True, endpoint=self.settings.endpoint)
         self.logger_provider.add_log_record_processor(BatchLogRecordProcessor(self.exporter))
         self.handler = LoggingHandler(level=logging.NOTSET, logger_provider=self.logger_provider)
 
@@ -54,5 +56,5 @@ class OpenTelemetryLogger(Logger):
 
     def level(self, level: str | int):
         if isinstance(level, str):
-            level = str_to_logger_type(level)
+            level = str_to_level(level)
         self.logger.setLevel(level)

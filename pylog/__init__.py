@@ -1,21 +1,33 @@
+import logging
 import os
 
-from pylog.logger import Logger
+from pylog.level import str_to_level
+from pylog.logger_base import Logger
 from pylog.logger_type import LoggerType, str_to_logger_type
-from pylog.loguru import LoguruLogger
-from pylog.opentelemetry import OpenTelemetryLogger
+from pylog.loguru_logger import LoguruLogger
+from pylog.opentelemetry_logger import OpenTelemetryLogger
+from pylog.settings import LoguruLoggerSettings, OpenTelemetryLoggerSettings
 
 
-def get_logger(type: LoggerType | str | None = None, service_name: str | None = None, service_instance_id: str | None = None, endpoint: str | None = None) -> Logger:
+def get_logger(type: LoggerType | str | None = None, level: str | int = logging.DEBUG, open_telemetry_settings: OpenTelemetryLoggerSettings | None = None, loguru_settings: LoguruLoggerSettings | None = None) -> Logger:
     if type is None:
-        type = os.getenv("ATRO_LOGGER_TYPE", default=LoggerType.LOGURU)
+        type = os.getenv("ATRO_PYLOG_TYPE", default=LoggerType.LOGURU)
     if isinstance(type, str):
         type = str_to_logger_type(type)
 
+    if level is None:
+        level = os.getenv("ATRO_PYLOG_LEVEL", default=logging.DEBUG)
+    elif isinstance(level, str):
+        level = str_to_level(level)
+
     match type:
         case LoggerType.LOGURU:
-            return LoguruLogger()
+            logger = LoguruLogger(loguru_settings)  # type: ignore[assignment]
         case LoggerType.OPENTELEMETRY:
-            return OpenTelemetryLogger(service_name=service_name, service_instance_id=service_instance_id, endpoint=endpoint)
+            logger = OpenTelemetryLogger(open_telemetry_settings)  # type: ignore[assignment]
         case _:
             raise Exception(f"Unknown logger type: {type}")
+
+    logger.level(level)
+
+    return logger

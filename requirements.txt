@@ -2,3 +2,4 @@ loguru
 opentelemetry-api
 opentelemetry-exporter-otlp-proto-grpc
 opentelemetry-sdk
+pydantic
