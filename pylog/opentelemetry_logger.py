@@ -15,6 +15,7 @@ from pylog.settings import OpenTelemetryLoggerSettings
 
 class OpenTelemetryLogger(Logger):
     def __init__(self, settings: OpenTelemetryLoggerSettings | None = None):
+        super().__init__()
         self.settings = settings or OpenTelemetryLoggerSettings()
         trace.set_tracer_provider(TracerProvider())
         self.logger_provider = LoggerProvider(

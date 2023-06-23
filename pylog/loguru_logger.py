@@ -7,6 +7,7 @@ from pylog.settings import LoguruLoggerSettings
 
 class LoguruLogger(Logger):
     def __init__(self, settings: LoguruLoggerSettings | None = None):
+        super().__init__()
         self.settings = settings or LoguruLoggerSettings()
         self.logger = loguru_logger
         self.logger.level("DEBUG")
