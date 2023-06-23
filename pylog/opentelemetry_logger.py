@@ -10,12 +10,11 @@ from opentelemetry.sdk.trace import TracerProvider
 
 from pylog.level import str_to_level
 from pylog.logger_base import Logger
-from pylog.settings import OpenTelemetryLoggerSettings
+from pylog.settings import BaseLoggerSettings, OpenTelemetryLoggerSettings
 
 
 class OpenTelemetryLogger(Logger):
-    def __init__(self, settings: OpenTelemetryLoggerSettings | None = None):
-        super().__init__()
+    def __init__(self, base_settings: BaseLoggerSettings | None = None, settings: OpenTelemetryLoggerSettings | None = None):
         self.settings = settings or OpenTelemetryLoggerSettings()
         trace.set_tracer_provider(TracerProvider())
         self.logger_provider = LoggerProvider(
@@ -35,7 +34,7 @@ class OpenTelemetryLogger(Logger):
         # Attach OTLP handler to root logger
         logging.getLogger().addHandler(self.handler)
         self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.DEBUG)
+        super().__init__(base_settings=base_settings)
 
     def debug(self, message: str):
         self.logger.debug(message)

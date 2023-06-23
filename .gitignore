@@ -142,7 +142,8 @@ cython_debug/
 .kivy/
 
 # virtualenv
-#*.venv
+*.venv
 
 atrocdk8s_out/
 atrocdk8s_output/
+test.py
