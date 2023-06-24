@@ -1,20 +1,24 @@
-from pylog.logger_base import Logger
-from pylog.logger_type import LoggerType, str_to_logger_type
-from pylog.loguru_logger import LoguruLogger
-from pylog.opentelemetry_logger import OpenTelemetryLogger
-from pylog.settings import BaseLoggerSettings, LoguruLoggerSettings, OpenTelemetryLoggerSettings
+import logging
+import sys
+from pathlib import Path
+
+sys.path.append(Path(__file__).resolve().parent.parent.as_posix())
+
+from pylog.logger_type import LoggerType  # noqa E402
+from pylog.opentelemetry_setup import open_telemetry_logger_setup  # noqa E402
+from pylog.rich_setup import rich_logger_setup  # noqa E402
+from pylog.settings import BaseLoggerSettings, OpenTelemetryLoggerSettings  # noqa E402
 
 
-def get_logger(base_settings: BaseLoggerSettings | None = None, open_telemetry_settings: OpenTelemetryLoggerSettings | None = None, loguru_settings: LoguruLoggerSettings | None = None) -> Logger:
-    base_settings = base_settings or BaseLoggerSettings()
-    base_settings.type = base_settings.type or LoggerType.LOGURU
-    if isinstance(base_settings.type, str):
-        base_settings.type = str_to_logger_type(base_settings.type)
+def get_logger(base_settings: BaseLoggerSettings = BaseLoggerSettings(), open_telemetry_settings: OpenTelemetryLoggerSettings = OpenTelemetryLoggerSettings()):
+    logger = logging.getLogger(base_settings.name)
 
     match base_settings.type:
-        case LoggerType.LOGURU:
-            return LoguruLogger(base_settings, loguru_settings)
+        case LoggerType.RICH:
+            rich_logger_setup(base_settings)
         case LoggerType.OPENTELEMETRY:
-            return OpenTelemetryLogger(base_settings, open_telemetry_settings)
+            open_telemetry_logger_setup(base_settings, open_telemetry_settings)
         case _:
             raise Exception(f"Unknown logger type: {type}")
+
+    return logger

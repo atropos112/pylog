@@ -1,7 +1,9 @@
 import logging
 
 
-def str_to_level(level: str) -> int:
+def str_to_level(level: str | int) -> int:
+    if isinstance(level, int):
+        return level
     match level.lower():
         case "debug":
             return logging.DEBUG
@@ -17,7 +19,12 @@ def str_to_level(level: str) -> int:
             raise Exception(f"Unknown logger level: {level}")
 
 
-def level_to_str(level: int) -> str:
+def level_to_str(level: str | int) -> str:
+    if isinstance(level, str):
+        if level.isdigit():
+            level = int(level)
+        else:
+            return level
     match level:
         case logging.DEBUG:
             return "DEBUG"

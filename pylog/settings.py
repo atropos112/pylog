@@ -1,11 +1,16 @@
+import logging
+
 from pydantic import BaseSettings
 
 from pylog.logger_type import LoggerType
 
 
 class BaseLoggerSettings(BaseSettings):
-    type: str | None | LoggerType = None
-    level: str | int | None = None
+    name: str = "pylog"
+    type: LoggerType = LoggerType.RICH
+    level: int | str = logging.DEBUG
+    msg_format: str = "%(message)s"
+    date_format: str = "%X"
 
     class Config:
         env_prefix = "ATRO_PYLOG_"
@@ -14,17 +19,10 @@ class BaseLoggerSettings(BaseSettings):
 
 
 class OpenTelemetryLoggerSettings(BaseSettings):
-    service_name: str | None = __name__
-    instance_id: str | None = __name__
+    service_name: str = "pylog"
+    instance_id: str = "pylog"
     endpoint: str | None = None
 
-    class Config:
-        env_prefix = "ATRO_PYLOG_"
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-
-
-class LoguruLoggerSettings(BaseSettings):
     class Config:
         env_prefix = "ATRO_PYLOG_"
         env_file = ".env"
