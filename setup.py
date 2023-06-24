@@ -10,7 +10,7 @@ setup(
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/atropos/atro-pylog",
-    install_requires=["loguru", "opentelemetry-api", "opentelemetry-exporter-otlp-proto-grpc", "opentelemetry-sdk", "pydantic", "python-dotenv"],
+    install_requires=["rich", "opentelemetry-api", "opentelemetry-exporter-otlp-proto-grpc", "opentelemetry-sdk", "pydantic", "python-dotenv"],
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",

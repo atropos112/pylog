@@ -1,8 +1,8 @@
-loguru
 opentelemetry-api
 opentelemetry-exporter-otlp-proto-grpc
 opentelemetry-sdk
 pydantic
+rich
 setuptools
 twine
 wheel
