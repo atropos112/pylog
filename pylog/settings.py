@@ -2,12 +2,10 @@ import logging
 
 from pydantic import BaseSettings
 
-from pylog.logger_type import LoggerType
-
 
 class BaseLoggerSettings(BaseSettings):
     name: str = "pylog"
-    type: LoggerType = LoggerType.RICH
+    type: str = "rich"
     level: int | str = logging.DEBUG
     msg_format: str = "%(message)s"
     date_format: str = "%X"
