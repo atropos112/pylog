@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 from pydantic import BaseSettings
 
@@ -12,7 +13,7 @@ class BaseLoggerSettings(BaseSettings):
 
     class Config:
         env_prefix = "ATRO_PYLOG_"
-        env_file = ".env"
+        env_file = (Path.home() / ".config" / "atro" / "pylog.env").as_posix(), ".env"
         env_file_encoding = "utf-8"
 
 
@@ -23,5 +24,8 @@ class OpenTelemetryLoggerSettings(BaseSettings):
 
     class Config:
         env_prefix = "ATRO_PYLOG_"
-        env_file = ".env"
+        env_file = (
+            (Path.home() / ".config" / "atro" / "pylog.env").as_posix(),
+            ".env",
+        )
         env_file_encoding = "utf-8"
