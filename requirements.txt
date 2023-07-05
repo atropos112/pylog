@@ -2,6 +2,7 @@ opentelemetry-api
 opentelemetry-exporter-otlp-proto-grpc
 opentelemetry-sdk
 pydantic
+pydantic-settings
 pydantic[dotenv]
 rich
 setuptools

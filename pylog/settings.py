@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class BaseLoggerSettings(BaseSettings):
@@ -11,21 +11,14 @@ class BaseLoggerSettings(BaseSettings):
     msg_format: str = "%(message)s"
     date_format: str = "%X"
 
-    class Config:
-        env_prefix = "ATRO_PYLOG_"
-        env_file = (Path.home() / ".config" / "atro" / "pylog.env").as_posix(), ".env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        env_prefix="ATRO_PYLOG_",
+        env_file=[(Path.home() / ".config" / "atro" / "pylog.env").as_posix(), ".env"],
+        env_file_encoding="utf-8",
+    )
 
 
-class OpenTelemetryLoggerSettings(BaseSettings):
+class OpenTelemetryLoggerSettings(BaseLoggerSettings):
     service_name: str = "pylog"
     instance_id: str = "pylog"
     endpoint: str | None = None
-
-    class Config:
-        env_prefix = "ATRO_PYLOG_"
-        env_file = (
-            (Path.home() / ".config" / "atro" / "pylog.env").as_posix(),
-            ".env",
-        )
-        env_file_encoding = "utf-8"
