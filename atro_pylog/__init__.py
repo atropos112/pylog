@@ -1,22 +1,23 @@
 import logging
 import sys
-import traceback
 from pathlib import Path
+
+import stackprinter
 
 sys.path.append(Path(__file__).resolve().parent.parent.as_posix())
 
-from pylog.level import level_to_str, str_to_level  # noqa E402
-from pylog.logger_type import LoggerType  # noqa E402
-from pylog.logger_type import str_to_logger_type  # noqa E402
-from pylog.opentelemetry_setup import open_telemetry_logger_setup  # noqa E402
-from pylog.rich_setup import rich_handler  # noqa E402
-from pylog.settings import BaseLoggerSettings, OpenTelemetryLoggerSettings  # noqa E402
+from atro_pylog.level import level_to_str, str_to_level  # noqa E402
+from atro_pylog.logger_type import LoggerType  # noqa E402
+from atro_pylog.logger_type import str_to_logger_type  # noqa E402
+from atro_pylog.opentelemetry_setup import open_telemetry_logger_setup  # noqa E402
+from atro_pylog.rich_setup import rich_handler  # noqa E402
+from atro_pylog.settings import BaseLoggerSettings, OpenTelemetryLoggerSettings  # noqa E402
 
 logger = logging.getLogger(__name__)
 
 
 def exception_handler(exc_type, exc_value, exc_traceback):
-    logger.critical(f"Exception: \n {str(exc_value)} \n {''.join(traceback.format_exception(exc_type, exc_value, exc_traceback))}")
+    logger.critical(stackprinter.format(exc_value))
 
 
 def set_logger(base_settings: BaseLoggerSettings = BaseLoggerSettings(), open_telemetry_settings: OpenTelemetryLoggerSettings = OpenTelemetryLoggerSettings()):
