@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "atro-pylog"
-version = "0.2.0"
+version = "0.4.0"
 description = "A simple logging library for Python. That either uses Loguru or OpenTelmetry collector (useful for local & cluster logging)."
 authors = ["Atropos <pypi.rising@atro.xyz>"]
 packages = [{ include = "atro_pylog" }]
