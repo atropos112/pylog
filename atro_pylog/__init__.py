@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def exception_handler(exc_type, exc_value, exc_traceback):
-    logger.critical(stackprinter.format(exc_value))
+    logger.exception(stackprinter.format(exc_value))
 
 
 def set_logger(settings: LoggerSettings = LoggerSettings()):
